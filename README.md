@@ -1,8 +1,20 @@
 # Welcome to the Hackathon Template!
 
+This time we have a use case for you - you can see how to load the data in `examples/load_dataset.py`.
+
 This repository provides a starting point for your hackathon project. It includes examples and guides to help you get started quickly with various tools and technologies.
 
 ## Getting Started
+
+```bash
+# install uv, more about uv in `.docs/uv_crash_course.md`
+curl -fsSL https://get.uv.dev | sh
+
+# install the dependencies
+uv sync
+```
+Create a `.env` file in the root of the repository and add your API keys.
+Look at the `.env.example` file for reference.
 
 This repository is a starter template with guides for:
 - Using Gemini
