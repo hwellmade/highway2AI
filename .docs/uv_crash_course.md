@@ -3,6 +3,11 @@
 `uv` is an extremely fast Python package installer and resolver, written in Rust, designed as a drop-in replacement for `pip` and `pip-tools`.
 
 ## Basic Commands
+```bash
+# Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
 
 ### Creating a Virtual Environment
 

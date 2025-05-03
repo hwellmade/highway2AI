@@ -8,7 +8,7 @@ This repository provides a starting point for your hackathon project. It include
 
 ```bash
 # install uv, more about uv in `.docs/uv_crash_course.md`
-curl -fsSL https://get.uv.dev | sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # install the dependencies
 uv sync
