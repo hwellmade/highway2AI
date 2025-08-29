@@ -1,0 +1,193 @@
+id,name,slug,description,website,city,created_at,updated_at,user_id,logo_url,tags
+0851be0e-feda-4bd0-812e-cf72e373ee3b,NextGen,nextgen,"NextGen is the student-run founder network behind Slush’D Ghent and the Tectonic summit, two high-energy conferences that connect 2 000 + builders with capital, mentors and each other. ",https://www.tectonicconf.eu/,Leuven,2025-08-01 09:47:28.449031+00,2025-08-01 09:47:28.449031+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://media.licdn.com/dms/image/v2/D4E0BAQEObef9-vmNDA/company-logo_200_200/B4EZews58SHIAM-/0/1751016253260/ghentslushd_logo?e=2147483647&v=beta&t=Xrd0kgp4Z_590xbQtE_DxCSV5TFzArZNn0m9MffWThc,[]
+0d6451de-f9a6-4877-a496-d60bf12c148a,North Star AGI,north-star-agi,"North Star AGI is a hands-on AI and robotics community based in Antwerp, Belgium. We bring together engineers, innovators, and enthusiasts to build the future of AI in Europe. Our mission is to connect talent, support startups, and reduce friction in the Belgian AI ecosystem.
+
+We organize events such as AI talks, community meetups, hackathons, and hands-on workshops. In just 4 months, we’ve hosted 4 events and grown to over 200 members. Our focus is on action, collaboration, and highlighting local talent.",https://www.ns2agi.com/,Antwerp,2025-08-01 07:25:14.016838+00,2025-08-01 07:25:14.016838+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://media.licdn.com/dms/image/v2/D4E0BAQFnhYflBhcaEA/company-logo_100_100/B4EZa_ykyTHMAQ-/0/1746974430811/north_star_agi_logo?e=1756944000&v=beta&t=eigjesC51v8z8_dDaTqSyZnEcsWYuox4X74KHHnM24c,"[""AI"",""Robotics""]"
+11056582-9160-4a25-9c48-527e7c93597d,Brucon,brucon,"BruCON is Belgium’s flagship hacker conference, held each autumn in Ghent, mixing three days of deep-dive trainings with a two-day talk track and a 48-hour capture-the-flag. Run entirely by volunteers, it draws 700 + security engineers, researchers and policy hackers from across Europe to trade tools, exploits and beer in equal measure.
+",https://www.brucon.org/,Antwerp,2025-08-01 09:46:09.611707+00,2025-08-01 09:46:09.611707+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://static.wixstatic.com/media/e81177_5eba6528ee5c42859bc2963fa3b2801a~mv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/e81177_5eba6528ee5c42859bc2963fa3b2801a~mv2.png,[]
+20690a5b-9e36-4412-a9ce-aa091ca0f88b,Belgium NLP Meetup,belgium-nlp-meetup,"Belgium NLP Meetup gathers 2 500 + researchers and engineers in Leuven to trade breakthroughs in language models, text mining and speech tech. Since 2016 the group has staged 25 + meetups, each featuring three pragmatic talks and an open-mic community slot. Show up for jargon-free knowledge-sharing, strong networking. The events are hosted across different cities in Belgium.
+",https://www.meetup.com/belgium-nlp-meetup/,Brussels,2025-08-01 09:39:31.765168+00,2025-08-01 09:39:31.765168+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://media.licdn.com/dms/image/sync/v2/D4E27AQEyadIhQOJa8Q/articleshare-shrink_800/articleshare-shrink_800/0/1728661874184?e=2147483647&v=beta&t=CNFjy8thuJ2P7PmnNxeINEA0Cc3IXXEKcc92UAMI4w0,[]
+27fdec35-3ff5-4bf9-b48d-4446bf9d9274,BeCentral,becentral,"BeCentral is Brussels-Central Station’s 10 500 m² digital campus where coding schools, startups and NGOs join forces to close Belgium’s digital-skills gap. 
+ Founded in 2017 by more than 60 entrepreneurs, the campus packs classrooms, co-working floors and maker labs designed to turn curious learners into impact-driven tech talent. 
+ Grab a seat and help drive their mission: making every Belgian an active actor in the digital revolution. ",https://www.becentral.org/,Brussels,2025-08-01 09:29:46.26651+00,2025-08-01 09:29:46.26651+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsCM00_jdC-r43vpLU4IkEboI-J1KHPoMb_w&s,"[""Coworking""]"
+28feb195-ea75-48bc-a2ed-75bcc45a77d2,Commons Hub Brussels,commons-hub-brussels,"The Commons Hub is a shared space opposite Central Station where citizens, collectives and social enterprises co-create, work and host events while stewarding the building itself as a common good. Every member is “crew,” sharing ownership and day-to-day responsibility—proof that community governance can out-perform private control. Step inside to meet collaborators rebuilding the commons and testing regenerative-economy ideas in real time.",https://commonshub.brussels/#calendar,Brussels,2025-08-01 09:31:35.122108+00,2025-08-01 09:31:35.122108+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://framerusercontent.com/assets/26TEwxKzcW5CnT4vRtVx1vGGjo0.jpg,"[""Coworking""]"
+2d47bf04-eb03-40fb-8c47-e25e6bb76a35,Hackerspace Gent (0x20),hackerspace-gent-0x20,"Hackerspace Gent—aka 0x20—is Ghent’s self-governed playground for constructive hacking, nestled inside Stadsmakers at Wiedauwkaai 51. Weekly Thursday socials and Sunday hack sabbaths power projects from open-source software to robotics, lock-picking and music tech. Bring curiosity (and maybe coffee); since 2009 the space has run entirely on shared passion and peer-to-peer learning.",https://hackerspace.gent/,Ghent,2025-08-01 09:35:00.450869+00,2025-08-01 09:35:00.450869+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://wiki.hackerspaces.org/images/4/4e/Hsg2.png,[]
+306ab325-4aed-4be2-a50e-23957f7878a4,Generative AI Belgium,generative-ai-belgium,"Generative AI Belgium is a 3 000-strong Ghent-based meetup that spotlights the real-world power of GenAI across art, design and business. Monthly evening sessions pack auditoriums with 400 + practitioners for lightning demos, deep-dive talks and frank debate. Join to swap prompts, projects and policy insights with Europe’s fastest-growing GenAI crowd.
+",https://www.linkedin.com/company/generative-ai-belgium/posts/?feedView=all,Ghent,2025-08-01 09:38:12.649377+00,2025-08-01 09:38:12.649377+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://media.licdn.com/dms/image/v2/D4E0BAQG1sqayOeX-SA/company-logo_200_200/company-logo_200_200/0/1682009598770?e=2147483647&v=beta&t=8jx9bO2GjdbtBW6SMSqk8SokghumTvFPUWJt1S2ENZU,[]
+33ed45e6-5980-4ea0-8720-44694d21acf3,FuckUp Nights Brussels and Wallonia - Powered by Pulse,fuckupnights-brussels-and-wallonia---powered-by-pulse,"Fuckup Nights is a global movement and event series that shares stories of professional failure. Each month, in events across the globe, we get three to four people to get up in front of a room full of strangers to share their own professional fuckup. The stories of the business that crashes and burns, the partnership deal that goes sour, the product that has to be recalled, we tell them all.",https://www.fuckupnights.com/city/brussels-and-wallonia,Brussels,2025-08-12 18:23:54.125643+00,2025-08-12 18:25:52.262872+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://cdn.prod.website-files.com/6272d152ce88bb6041159bb7/62740049e4834ec73555527c_Fuckup-Nights-Logo-White.png,"[""FR"",""Entrepreneurship"",""Story-telling""]"
+3a3b672f-1652-430b-bd8f-f3a3c67d7cba,0xAIF,0xaif,"0xAIF is a Europe-wide guild where technical founders, ML engineers and applied researchers build and ship next-gen AI together. Live-coding sessions, hackathons and “problem jams” turn open-source tools into real-world deployments across climate, health, mobility and more. Join to swap code, spin up projects and find collaborators who speak your stack.",https://0xaif.eu/,Brussels,2025-08-01 15:20:41.741825+00,2025-08-01 15:20:41.741825+00,4ce70e37-3bc1-48b5-8002-555794d0e853,,[]
+3e18a385-67e8-492a-ac25-8318686fe515,La Grand Poste,la-grand-poste,"La Grand Poste is a renovated neo-gothic post office now serving as Liège’s creative tech hub, mixing coworking, a microbrewery and startup programs under one glass roof.",https://www.lagrandposte.be/fr/,Liège,2025-08-01 09:51:00.419555+00,2025-08-01 09:51:00.419555+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpEWsZsYTOQvjCxocMo2dm5lR2GEaryl-z4g&s,[]
+440aa1ae-610a-49c5-9b3c-7d9ac6bf7642,AI Community,ai-community,AI Community | Common hub Belgium,,Brussels,2025-08-01 08:54:00.741326+00,2025-08-01 08:54:00.741326+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,"https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=300,height=300/event-covers/92/d7ac19aa-e8fa-457e-8f22-882a0c03d30e.png",[]
+4973e119-cc78-4d43-9db4-51fe75cfb376,A6K,a6k,"The next era of industry starts here.
+A6K is a unique and stimulating ecosystem at the heart of Europe that brings together industry leaders, emerging start-ups, universities, institutional players & research centers in one single hub in order to boost innovation in the field of engineering. If you want to shape the future of technology with us.",https://a6k.be,Liège,2025-08-12 21:06:18.575775+00,2025-08-12 21:06:18.575775+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://images.ctfassets.net/myqv2p4gx62v/1pqoiUfnV3NoQe1RQEUzy8/77773ade28dcbea2379fc90c6017681e/Logo-A6K.png,[]
+60461584-0e43-4783-9d4d-c2810c230619,First Movers,first-movers,"FirstMovers is Belgium’s premier community for early-stage startup builders and operators. It’s a fast-paced network where young entrepreneurs and professionals share insights, tools, and support to scale ventures. Join to connect with peers navigating the real startup rollercoaster—from chaos to traction.",https://first-movers.be/,Brussels,2025-08-01 09:44:33.34894+00,2025-08-01 09:44:33.34894+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://www.first-movers.be/lovable-uploads/38ed989c-e759-485c-a081-df2b7103ded5.png,[]
+65d87218-d1c1-443e-823f-40e10b481323,HSBXL,hsbxl,"Hackerspace Brussels (HSBXL) is a 170 m² community workshop in Molenbeek’s LionCity, mixing hardware tinkerers, coders and artists under one roof. Tuesday “TechTuesdays”, open-coworking Fridays and frequent hackathons let visitors dive into a 9 000-component electronics lab, heavy-duty tools and dual 3D printers. Drop by Rue Osseghem 53 to hack, learn and share at the capital’s original hackerspace.
+",https://hsbxl.be/,Brussels,2025-08-01 09:34:17.064047+00,2025-08-01 09:34:17.064047+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://files.mastodon.online/accounts/avatars/109/268/010/999/360/628/original/91fbe1c9b4e0e617.png,[]
+74b01eff-715c-4a06-a90d-53c201dfe2fd,Cercle Du Lac,cercle-du-lac,"Cercle du Lac is a business club and event venue located in Louvain-la-Neuve, at the heart of Wallonia, Belgium. It offers exceptional spaces for conferences, networking activities, debates, and professional gatherings. The club is known for hosting prominent speakers—such as CEOs, judges, and industry leaders—and for its active community of professionals who value high-quality networking, learning opportunities, and building trusted relationships within the Brabant Wallon region.",https://www.cercledulac.be/,Leuven,2025-08-21 16:46:51.468329+00,2025-08-21 16:46:51.468329+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://www.cercledulac.be/web/image/website/1/logo/Cercle%20du%20Lac?unique=a2daa83,"[""business club"",""networking"",""conferences"",""professional events"",""business partnerships"",""executive networking"",""seminars"",""professional networking"",""Belgian business"",""leadership"",""corporate events"",""business community"",""entrepreneurship"",""Wallonia"",""Louvain-la-Neuve""]"
+7cbfc2d7-94f4-454c-9655-2c4942fc324c,The Beacon,the-beacon,"The Beacon is Antwerp’s 9 000 m² digital-innovation hub where AI, IoT, data and drone pioneers team up with the city, port and university to tackle smart-city, logistics and industrial challenges. ",https://www.thebeacon.eu/,Antwerp,2025-08-01 09:27:50.589193+00,2025-08-01 09:27:50.589193+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://eu.thebeacon.filebuddy.be/static/base/images/meta_image.jpg,"[""Coworking""]"
+84e0f85e-c1ba-4c28-84d8-33864d219fdb,iMagineLab,imaginelab,"iMagineLab is the University of Antwerp’s student-run tech club on Campus Groenenborger, where engineering minds turn raw ideas into working prototypes. Weekly build nights and hackathons unlock 3D printers, modular drones, VR rigs and a full electronics lab. Join to prototype, upskill and network with future-proof peers long before you graduate.
+",https://imaginelab.club/,Antwerp,2025-08-01 09:33:25.58687+00,2025-08-01 09:33:25.58687+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ie46-SZF0qLuSrN3G-eozM_iWfZ1HdxLPg&s,"[""Hackerspace"",""Makerspace""]"
+877fef25-1ea0-43ae-82af-6ad4eaea99cb,Open AI,open-ai,Exactly what you think it is,https://events.openai.com/hacktivateai/home,Brussels,2025-08-12 21:29:45.864421+00,2025-08-12 21:29:45.864421+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://assets.swoogo.com/uploads/5328380-681e53305ecf3.svg,"[""AI"",""Policy"",""Cutting-edge""]"
+89c97008-ce5e-4db8-8c3c-cd496195f1be,BeCode,becode,"
+Enabling tomorrow's digital talents to blossom.
+
+We make tech jobs accessible to all. No matter if you have experience or not, we support, advise, train you to become the tech talent of tomorrow and we help companies to reskill / upskill their team and hire our talents. 
+
+So, trust the magic of new beginnings & deep dive into a world full of opportunities!
+",https://becode.org/,Brussels,2025-08-21 16:47:02.811572+00,2025-08-21 16:47:02.811572+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://becode.org/wp-content/uploads/2023/01/becode-logo.png,[]
+93bb9ffe-54b1-4637-ae24-699c70e42708,sustAIn.brussels,sustainbrussels,"sustAIn.brussels
+Kantersteen 16
+1000 Brussel
+
+
+Avez-vous l'ambition de faire passer votre organisation à la vitesse de l'innovation numérique et durable ?
+
+
+Appliquer avec succès les technologies digitales pour assurer l'avenir de votre organisation n'est pas
+une évidence. SustAIn.Brussels sert de point d'accès unique à l'innovation durable et numérique à Bruxelles, en mettant l'accent sur l'IA et d'autres technologies émergentes.
+
+Nous sommes un Hub européen d'innovation numérique (European Digital Innovation Hub) à
+Bruxelles, créé avec le soutien de la Commission européenne, d'Innoviris et de hub.brussels. La
+coordination est assurée par Sirris, Agoria, BeCentral, la VUB et l'ULB.
+
+Nous vous accompagnons dans votre démarche d'innovation durable et numérique.
+
+
+
+SPREEK MET EEN EXPERT
+
+
+ 
+Nous vous aidons à :
+
+    Comment choisir et tester des solutions technologiques ?
+
+    Quelles compétences devez-vous acquérir ?
+
+    Quels types d'investissements sont nécessaires et où les trouver ?
+
+    Comment mettre en place des partenariats locaux et internationaux avec des acteurs publics et privés ?
+
+    Comment faire tout cela de manière durable et impactante pour la société et l'environnement ?
+
+    SustAIn.brussels vous donne accès à sa vaste expertise et à son réseau de partenaires.​ ",https://www.sustain.brussels,Brussels,2025-08-12 20:48:35.535748+00,2025-08-12 20:48:35.535748+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://www.sustain.brussels/web/image/website/1/logo/sustAIn.brussels?unique=835968e,[]
+94e9d002-287c-40f3-a7db-734b77ee536f,Data Science Leuven,data-science-leuven,"Data Science Leuven is a meetup that unites local ML engineers, researchers and business folk for hands-on talks and after-work beers.
+",https://www.meetup.com/data-science-leuven/,Leuven,2025-08-01 09:50:17.429927+00,2025-08-01 09:50:17.429927+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2XJrFfn32zSDULHYFRqMbm5SceMmCobqJQQ&s,[]
+9b6fd8db-51cf-4d78-baf3-1998964ed3a3,SuperNova,supernova,"SuperNova is Antwerp’s flagship tech and innovation festival, turning Waagnatie into a two-day arena where 8 700 innovators, 300 investors and 200+ startups collide over keynote stages, demo zones and curated matchmaking.",https://supernovafest.eu/en/,Antwerp,2025-08-01 09:51:42.23442+00,2025-08-01 09:51:42.23442+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://supernovafest.eu/hs-fs/hubfs/SuperNova%20Brand%20Assets/SuperNova%202025/Website%20Assets/Brand%20Box/Main%20Logo.png?width=1080&height=960&name=Main%20Logo.png,[]
+9c3dde55-91b7-45d7-ab1a-c52e2b2f0f47,Café Numérique Liège,caf-numrique-lige,"Cafe-Numérique-Liège_logo
+
+Café Numérique Liège : votre rendez-vous Tech tous les premiers lundi du mois, alliant conférences inspirantes, innovation et networking, au cœur de La Grand Poste.
+",https://cafenumerique.org/,Liège,2025-08-12 21:16:04.671662+00,2025-08-12 21:16:04.671662+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://cdn.cmsfly.com/6598234a6274e00012a85753/cafen-3lwbuw.svg,"[""FR"",""digital"",""networking""]"
+a752576e-b315-43af-a3e5-c7d31a9c7ff7,FuckUp Nights Flanders - Powered by Pulse,fuck-up-nights-flanders---powered-by-pulse,"Fuckup Nights is a global movement and event series that shares stories of professional failure. Each month, in events across the globe, we get three to four people to get up in front of a room full of strangers to share their own professional fuckup. The stories of the business that crashes and burns, the partnership deal that goes sour, the product that has to be recalled, we tell them all.",https://www.fuckupnights.com/city/flanders,Ghent,2025-08-12 18:25:28.66968+00,2025-08-12 18:25:45.59287+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://cdn.prod.website-files.com/6272d152ce88bb6041159bb7/628d8c935ed89e2d431964a1_Artboard%2069.svg,"[""Entrepreneurship"",""Story-telling"",""NL""]"
+b8562e68-3248-4741-ba44-0657f107e0a0,NerdLab,nerdlab,"Nerdlab is a non-profit makerspace and art-tech collective based in Ghent that exists for one blunt purpose: give young people the creative, technical and social firepower they’ll need to shape a tech-saturated future. 
+
+Currently located in Buurtcentrum Lousberg, Tarbotstraat 61C, 9000 Gent (a few streets south-east of Dampoort)
+
+They organize events on a weekly basis, check out their website to learn more!",https://nerdlab.be/,Ghent,2025-08-01 09:18:03.779578+00,2025-08-01 09:18:03.779578+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-9hTPJIN9vmU5fUS_2Gqu_B5rsEq7nvRu4Q&s,"[""Art"",""Tech"",""Makerspace""]"
+c22fb912-aa2a-4d10-99b5-a0c815267115,GDG Leuven,gdg-leuven,"GDG KU Leuven is the on-campus Google Developer Group that turns curious minds into capable builders with Android, Firebase, TensorFlow and Google Cloud. Fast-paced talks, codelabs and hackathons swap theory for hands-on problem-solving in a no-pitch, community-first atmosphere.",https://www.linkedin.com/company/gdg-kul/posts/?feedView=all,Leuven,2025-08-01 09:43:14.200004+00,2025-08-01 09:43:14.200004+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://media.licdn.com/dms/image/v2/D4D0BAQEkX2kVwmFUwA/company-logo_200_200/B4DZYf9KU.HIAM-/0/1744292849345?e=2147483647&v=beta&t=D0Q_ztmk-2mYWLTA1HdybN9vtqHE7cIjF4nwaCCmaEM,[]
+c9130d5c-8f46-4961-837f-fb0ad0bd4208,Women in Data Science / Belgium,women-in-data-science--belgium," The mission of Women in Data Science (WiDS) Belgium is to increase participation of women in data science and to feature outstanding women doing outstanding work.
+
+Women in Data Science Belgium (WiDS Belgium) is part of the global Women in Data Science initiative-launched at Stanford University in 2015-to cultivate the next generation of Data Science and AI leaders by providing resources for upskilling, networking, mentorship, and growth opportunities-especially for women. Locally, we strive to increase the participation of women in data science and to showcase outstanding work by women researchers, engineers, and leaders in Belgium.
+
+Each year, WiDS Belgium brings together leading voices from academia and industry, for a one-day conference featuring talks, posters, mentorship and networking sessions-all designed to inspire and equip you to advance your career and impact. Mark your calendar: the next WiDS Belgium Conference will take place on 26 September 2025, and ticket reservations are now open!",https://www.womenindatascience.be/,Antwerp,2025-08-12 21:28:12.06284+00,2025-08-12 21:28:51.844143+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://www.womenindatascience.be/wp-content/uploads/2023/11/WiDS-line1-3-scaled.jpg,"[""Women"",""Jobs"",""Community"",""Mentorship""]"
+cf48ecf6-7dd3-4e09-80af-310d5caf139a,BECI - Brussels,beci---brussels,"Beci, the voice of business in Brussels
+Formerly the Brussels Chamber of Commerce, BECI is an unmissable institution in weaving international partnerships with public and private actors.
+They serve both Brussels-based companies looking to go international, or foreign entrepreneurs opening shop in Brussels.",https://www.beci.be,Brussels,2025-08-12 18:30:41.061077+00,2025-08-12 18:30:41.061077+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://www.beci.be/web/image/website/1/logo/Beci?unique=06bed02,"[""Entrepreneurship"",""Foreign Investment""]"
+e3377c6d-866b-4e24-8afe-e86a324e73b9,Wintercircus Collective,wintercircus-collective,"Wintercircus is Ghent’s 15 000 m² reborn circus where entrepreneurs, artists and researchers meet every day to turn bold ideas into real-world impact. A membership badge unlocks 24/7 work zones, on-site wellness, food & bars, and a 750-seat arena that doubles as the city’s public tech stage. Join us and prototype a saner tech future right where culture, policy and deep-tech intersect.",https://www.wintercircus.be/en,Ghent,2025-08-01 09:26:32.928075+00,2025-08-01 09:26:32.928075+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYMyJ-N_EssDPu7p-4jHM14y6yTxjbx7PT8g&s,"[""Coworking""]"
+e6103fa1-bf46-433d-b968-5c59f8bfa42d,KU Leuven,ku-leuven,"KU Leuven is Belgium’s largest and highest-ranked university, counting more than 65 000 students and 7 400 PhD researchers across Leuven and campuses throughout Flanders. Rooted in a 1425 charter yet ranked 43rd globally, it combines six centuries of academic heritage with leading-edge research in AI, health, energy and beyond. Plug into its labs, funding networks and talent pipeline to translate breakthrough science into world-changing solutions.
+",https://www.kuleuven.be/kuleuven,Leuven,2025-08-01 09:41:00.026606+00,2025-08-01 09:41:00.026606+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/KU_Leuven_logo.svg/1200px-KU_Leuven_logo.svg.png,[]
+fdb3aade-8777-459c-930f-ef33930ae790,HackerSpace Brussels,hackerspace-brussels,"Hackerspace Brussels - HSBXL
+
+    Located in a historical office building, HSBXL is a collaborative community space of about 170 square meters. It's a place for creative and constructive hackers of all kinds – tech enthusiasts, tinkerers, artists, and anyone interested in pushing the boundaries of technology.
+
+    There's a workshop area, a decent electronics lab with over 9000 components, a couple of 3D printers, a library, and lots of tools in our “heavy corner”.
+    You're always welcome to come over and follow one of the workshops or attend the weekly Tuesday meetings, co-working days, hack nights, or other events.
+
+    Curious about what of kind tools, devices, and machines we have in our space? Read more on our tools page.
+
+Connect
+
+Github Gitlab Meetup Eventbrite Youtube Twitter Mastodon/Fediverse Facebook
+Wat is HSBXL?
+
+Hackerspace Brussels, bekend als HSBXL, is een collaboratieve gemeenschap gevestigd in een historisch kantoorgebouw in Molenbeek, Brussel. De ruimte beslaat ongeveer 170 vierkante meter en is bedoeld voor creatieve en constructieve hackers van allerlei aard—technologie-enthousiastelingen, knutselaars, kunstenaars en iedereen die geïnteresseerd is in het verleggen van technologische grenzen.
+Faciliteiten bij HSBXL
+
+    Werkplaats: Een ruimte uitgerust voor diverse projecten en experimenten.
+    Elektronicawerkplaats: Bevat meer dan 9000 componenten voor elektronische projecten.
+    3D-printers: Beschikbaar voor het maken van prototypes en creatieve ontwerpen.
+    Lasercutter: Beschikbaar voor het maken van prototypes en creatieve ontwerpen.
+    Bibliotheek: Een verzameling bronnen voor leden om te raadplegen.
+    ""Heavy Corner"": Uitgerust met diverse gereedschappen voor zwaardere werkzaamheden.
+
+Doelstellingen van HSBXL
+
+    Kennisdeling: Bevorderen van leren en uitwisselen van kennis tussen leden door middel van workshops, lezingen en gezamenlijke projecten.
+    Toegang tot technologie: Bieden van apparatuur en middelen die individuen thuis mogelijk niet hebben.
+    Creativiteit en innovatie stimuleren: Een omgeving creëren waar mensen kunnen experimenteren en ideeën tot leven kunnen brengen.
+    Samenwerking bevorderen: Opbouwen van een gemeenschap waar mensen met verschillende achtergronden samenwerken en van elkaar leren.
+    Open cultuur ondersteunen: Bevorderen van openheid en transparantie in technologie, met nadruk op vrije software en open hardware.
+
+Evenementen en Activiteiten
+
+HSBXL organiseert regelmatig evenementen zoals:
+
+    TechTuesdays: Wekelijkse open avonden voor zowel leden als bezoekers.
+    Open Coworking Days: Gelegenheden om samen te werken en ideeën uit te wisselen.
+    Workshops en Hackathons: Sessies gericht op specifieke technologieën of projecten.
+
+Locatie en Bereikbaarheid
+
+HSBXL is gelegen aan Rue Osseghem 53, 1080 Molenbeek, Brussel, België. De ruimte bevindt zich in LionCity, een levendige en innovatieve plek in het hart van Brussel, gehuisvest in het voormalige distributiecentrum van Delhaize in Molenbeek. LionCity herbergt een diverse mix van ambachten, ondernemers, sociale projecten, cultuur, sport en stedelijke landbouw.
+
+De dichtstbijzijnde metrohalte is Beekkant, op slechts enkele tientallen meters afstand, waar de meeste metrolijnen in Brussel (1, 5, 2, 6) stoppen. Bij aankomst bij LionCity, als de poort gesloten is, kunt u bellen naar +32 2 880 40 04; een lid zal u dan verder begeleiden.
+Contact
+
+Voor vragen kunt u contact opnemen via Matrix op #hsbxl:matrix.org.
+Lidmaatschap
+
+Geïnteresseerden kunnen lid worden van HSBXL om toegang te krijgen tot de faciliteiten en deel te nemen aan de gemeenschap. Meer informatie over het lidmaatschap is beschikbaar op de officiële website.
+
+HSBXL is een non-profitorganisatie die draait op vrijwilligers en is gebaseerd op waarden zoals openheid, inclusiviteit en de wens om technologie ten goede van de gemeenschap te gebruiken. Iedereen met een nieuwsgierige geest en een passie voor leren is welkom, ongeacht ervaring of achtergrond.
+C'est quoi, HSBXL?
+
+Hackerspace Brussels, connu sous le nom de HSBXL, est une communauté collaborative située dans un bâtiment historique à Molenbeek, Bruxelles. L'espace s'étend sur environ 170 mètres carrés et est destiné aux hackers créatifs et constructifs de tous horizons—enthousiastes en technologie, bricoleurs, artistes et toute personne intéressée à repousser les limites technologiques.
+Installations à HSBXL
+
+    Atelier: Un espace équipé pour divers projets et expérimentations.
+    Atelier d'électronique: Contient plus de 9000 composants pour des projets électroniques.
+    Imprimantes 3D: Disponibles pour créer des prototypes et des conceptions créatives.
+    Découpeuse: Disponibles pour créer des prototypes et des conceptions créatives.
+    Bibliothèque: Une collection de ressources consultables par les membres.
+    ""Heavy Corner"": Équipé d'outils divers pour les travaux lourds.
+
+Objectifs de HSBXL
+
+    Partage de connaissances: Encourager l'apprentissage et l'échange de savoir entre les membres grâce à des ateliers, des conférences et des projets communs.
+    Accès à la technologie: Fournir des équipements et des ressources que les individus n'ont peut-être pas chez eux.
+    Stimuler la créativité et l'innovation: Créer un environnement où les gens peuvent expérimenter et donner vie à leurs idées.
+    Favoriser la collaboration: Construire une communauté où des personnes de différents horizons collaborent et apprennent les unes des autres.
+    Soutenir une culture ouverte: Promouvoir l'ouverture et la transparence en technologie, en mettant l'accent sur les logiciels libres et le matériel open source.
+
+Événements et Activités
+
+HSBXL organise régulièrement des événements tels que :
+
+    TechTuesdays: Soirées ouvertes hebdomadaires pour les membres et les visiteurs.
+    Journées de coworking ouvertes: Opportunités pour travailler ensemble et échanger des idées.
+    Ateliers et hackathons: Sessions axées sur des technologies ou projets spécifiques.
+
+Emplacement et Accessibilité
+
+HSBXL est situé au Rue Osseghem 53, 1080 Molenbeek, Bruxelles, Belgique. L'espace se trouve à LionCity, un lieu vivant et innovant au cœur de Bruxelles, hébergé dans l'ancien centre de distribution de Delhaize à Molenbeek. LionCity abrite une mixité diversifiée d'artisanat, d'entrepreneurs, de projets sociaux, de culture, de sport et d'agriculture urbaine.
+
+La station de métro la plus proche est Beekkant, à seulement quelques dizaines de mètres, où s'arrêtent la plupart des lignes de métro de Bruxelles (1, 5, 2, 6). À votre arrivée à LionCity, si le portail est fermé, vous pouvez appeler le +32 2 880 40 04 ; un membre vous guidera pour entrer.
+Contact
+
+Pour toute question, vous pouvez contacter via Matrix à #hsbxl:matrix.org.
+Adhésion
+
+Les personnes intéressées peuvent devenir membres de HSBXL pour accéder aux installations et participer à la communauté. Plus d'informations sur l'adhésion sont disponibles sur le site officiel.
+
+HSBXL est une organisation à but non lucratif, gérée par des bénévoles et basée sur des valeurs telles que l'ouverture, l'inclusivité et le désir d'utiliser la technologie au service de la communauté. Toute personne curieuse et passionnée par l'apprentissage est la bienvenue, quel que soit son niveau d'expérience ou ses origines.
+",https://hsbxl.be/,Brussels,2025-08-12 23:24:41.366717+00,2025-08-12 23:24:41.366717+00,fef3ea4e-eb70-45ff-9ea6-fcc2ad9b198f,https://hsbxl.be/images/hsbxl-logo.svg,"[""Hackerspace"",""networking"",""hardware"",""prototyping"",""PoC"",""open-source"",""OSS""]"

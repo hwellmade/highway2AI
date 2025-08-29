@@ -1,8 +1,12 @@
 # Welcome to the Hackathon Template!
 
-This time we have a use case for you - you can see how to load the data in `examples/load_dataset.py`.
+This time we have a use case for you - your data lies in `data/` folder.
+Improve BTE, glue the ecosystem together, reach the north star
 
-This repository provides a starting point for your hackathon project. It includes examples and guides to help you get started quickly with various tools and technologies.
+Communities: A list of communities that are part of the ecosystem.
+Events: A list of events that are part of the ecosystem.
+Communities to Events: Which event is organized by which community?
+
 
 ## Getting Started
 
