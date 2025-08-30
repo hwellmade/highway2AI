@@ -158,7 +158,7 @@ def setup_llm(llm_model: str = None):
     provider = os.getenv('LLM_PROVIDER', 'openrouter').lower()
     
     if provider == 'google':
-        model = llm_model or os.getenv('GOOGLE_MODEL', 'gemini-2.0-flash')
+        model = llm_model or os.getenv('GOOGLE_MODEL', 'gemini-2.5-flash')
         api_key = os.getenv('GOOGLE_API_KEY')
         if not api_key:
             raise ValueError("GOOGLE_API_KEY not found in .env file!")
@@ -211,9 +211,13 @@ async def run_automation_analysis(website_url: str, task_description: str, max_s
     print(f"   🌐 Website: {website_url}")
     print(f"   📋 Task: {task_description}")
     
-    # Create output directory
-    output_dir = Path("./e2e_analysis_results")
-    output_dir.mkdir(exist_ok=True)
+    # Create timestamped output directory
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    base_output_dir = Path("./e2e_analysis_results")
+    output_dir = base_output_dir / timestamp
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    print(f"📁 Results will be saved to: {output_dir}")
     
     # Setup components
     llm = setup_llm()
@@ -262,7 +266,7 @@ async def run_automation_analysis(website_url: str, task_description: str, max_s
         
         # Extract comprehensive data
         analysis_data = extract_analysis_data(
-            history, website_url, task_description, total_duration, output_dir, gif_success
+            history, website_url, task_description, total_duration, output_dir, gif_success, timestamp
         )
         
         return analysis_data
@@ -281,7 +285,7 @@ async def run_automation_analysis(website_url: str, task_description: str, max_s
 
 
 def extract_analysis_data(history: AgentHistoryList, website_url: str, task_description: str, 
-                         total_duration: float, output_dir: Path, enhanced_gif_created: bool = False):
+                         total_duration: float, output_dir: Path, enhanced_gif_created: bool = False, timestamp: str = None):
     """Extract comprehensive data for analyzer LLM"""
     
     print("📊 Extracting analysis data...")
@@ -385,11 +389,13 @@ def extract_analysis_data(history: AgentHistoryList, website_url: str, task_desc
             "total_tokens": history.usage.total_tokens if history.usage else 0
         },
         "visual_documentation": {
-            "enhanced_gif_with_thinking": str(output_dir / "enhanced_automation_with_thinking.gif") if enhanced_gif_created else None,
-            "gif_file": str(output_dir / "automation_flow.gif"),
-            "screenshots_directory": str(output_dir / "screenshots"),
+            "enhanced_gif_with_thinking": f"/results/{timestamp}/enhanced_automation_with_thinking.gif" if enhanced_gif_created and timestamp else None,
+            "gif_file": f"/results/{timestamp}/automation_flow.gif" if timestamp else str(output_dir / "automation_flow.gif"),
+            "screenshots_directory": f"/results/{timestamp}/screenshots" if timestamp else str(output_dir / "screenshots"),
             "individual_screenshots": len(screenshots),
-            "enhanced_gif_created": enhanced_gif_created
+            "enhanced_gif_created": enhanced_gif_created,
+            "timestamp": timestamp,
+            "local_output_dir": str(output_dir)
         }
     }
     
