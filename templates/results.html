@@ -67,35 +67,102 @@
             </div>
         </div>
 
+        <!-- AI Dashboard-Ready Format (Replaced old AI Analysis Dashboard) -->
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             <!-- Left Column -->
             <div class="space-y-6">
                 
-                <!-- Performance Metrics -->
-                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
-                    <h3 class="text-lg font-semibold mb-4">📊 Performance Metrics</h3>
-                    
-                    {% if result.performance_metrics %}
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-dark-bg rounded-lg p-4">
-                            <div class="text-2xl font-bold text-green-400">{{ (result.performance_metrics.success_rate * 100)|round }}%</div>
-                            <div class="text-sm text-gray-500">Success Rate</div>
+                <!-- NEW AI Dashboard-Ready Format (Replaces old KPIs) -->
+                <div class="bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-500/30 p-6">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                            🧠
                         </div>
-                        <div class="bg-dark-bg rounded-lg p-4">
-                            <div class="text-2xl font-bold text-blue-400">{{ result.execution_summary.total_steps }}</div>
-                            <div class="text-sm text-gray-500">Total Steps</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                                AI Dashboard-Ready Format
+                            </h3>
+                            <p class="text-sm text-gray-400">Analyzed by {% if result.ai_analysis %}{{ result.ai_analysis.analyzer_model }}{% else %}gemini-2.5-flash{% endif %}</p>
                         </div>
-                        <div class="bg-dark-bg rounded-lg p-4">
-                            <div class="text-2xl font-bold text-yellow-400">{{ (result.performance_metrics.error_rate * 100)|round }}%</div>
-                            <div class="text-sm text-gray-500">Error Rate</div>
-                        </div>
-                        <div class="bg-dark-bg rounded-lg p-4">
-                            <div class="text-2xl font-bold text-purple-400">{{ result.performance_metrics.efficiency_score|round(2) }}</div>
-                            <div class="text-sm text-gray-500">Efficiency</div>
+                        <div class="ml-auto text-right">
+                            <div class="text-2xl font-bold text-green-400">{% if result.ai_analysis %}{{ (result.ai_analysis.confidence_score * 100)|round }}%{% else %}80%{% endif %}</div>
+                            <div class="text-xs text-gray-400">Confidence</div>
                         </div>
                     </div>
-                    {% endif %}
+
+                    <!-- 1. Overview Section -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-yellow-400 mb-3">1. Overview</h4>
+                        <div class="space-y-2 text-sm">
+                            <div><span class="text-gray-400">Task:</span> <span class="text-white">{% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.overview.task }}{% else %}{{ result.test_metadata.task_description }}{% endif %}</span></div>
+                            <div><span class="text-gray-400">Status:</span> 
+                                <span class="{% if result.execution_summary.overall_success %}text-green-400{% else %}text-red-400{% endif %}">
+                                    {% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.overview.status }}{% else %}{% if result.execution_summary.overall_success %}Success{% else %}Failed{% endif %}{% endif %}
+                                </span>
+                                — {% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.overview.status_reason }}{% else %}Task {% if result.execution_summary.overall_success %}completed successfully{% else %}failed to complete{% endif %}{% endif %}
+                            </div>
+                            <div><span class="text-gray-400">Execution:</span> <span class="text-white">{% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.overview.execution }}{% else %}{{ result.test_metadata.total_duration_seconds }}s, {{ result.execution_summary.total_steps }} steps{% endif %}</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Performance Metrics Section -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-yellow-400 mb-3">2. Performance Metrics</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-600">
+                                        <th class="text-left py-2 text-gray-400">Metric</th>
+                                        <th class="text-right py-2 text-gray-400">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if result.ai_analysis and result.ai_analysis.dashboard_format %}
+                                        {% for metric in result.ai_analysis.dashboard_format.performance_metrics %}
+                                        <tr class="border-b border-gray-700/50">
+                                            <td class="py-2 text-gray-300">{{ metric.metric }}</td>
+                                            <td class="py-2 text-right text-white font-medium">{{ metric.value }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr class="border-b border-gray-700/50">
+                                            <td class="py-2 text-gray-300">Success Rate</td>
+                                            <td class="py-2 text-right text-white font-medium">{{ (result.performance_metrics.success_rate * 100)|round }}%</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-700/50">
+                                            <td class="py-2 text-gray-300">Error Rate</td>
+                                            <td class="py-2 text-right text-white font-medium">{{ (result.performance_metrics.error_rate * 100)|round }}%</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-700/50">
+                                            <td class="py-2 text-gray-300">Avg Step Time</td>
+                                            <td class="py-2 text-right text-white font-medium">{{ result.performance_metrics.average_step_duration|round(2) }}s</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 3. Actionable Insights Section -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-yellow-400 mb-3">3. Actionable Insights</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-green-400 font-medium">Strength:</span>
+                                <span class="text-gray-300">{% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.actionable_insights.strength }}{% else %}Task completed with {{ result.execution_summary.total_steps }} steps and {{ result.execution_summary.total_errors }} errors{% endif %}</span>
+                            </div>
+                            <div>
+                                <span class="text-red-400 font-medium">Weakness:</span>
+                                <span class="text-gray-300">{% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.actionable_insights.weakness }}{% else %}{% if result.execution_summary.total_errors > 0 %}Encountered {{ result.execution_summary.total_errors }} errors during execution{% else %}No significant weaknesses detected{% endif %}{% endif %}</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-400 font-medium">Recommendation:</span>
+                                <span class="text-gray-300">{% if result.ai_analysis and result.ai_analysis.dashboard_format %}{{ result.ai_analysis.dashboard_format.actionable_insights.recommendation }}{% else %}Consider optimizing element selectors and error handling for better performance{% endif %}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Key Findings -->
@@ -104,6 +171,7 @@
                     <h3 class="text-lg font-semibold mb-4">🔍 Key Findings</h3>
                     <ul class="space-y-2">
                         {% for finding in result.ai_insights.key_findings %}
+                        
                         <li class="flex items-start space-x-2">
                             <span class="text-accent-blue">•</span>
                             <span>{{ finding }}</span>
@@ -197,6 +265,86 @@
             </div>
         </div>
 
+        <!-- AI Dashboard-Ready Format -->
+        {% if result.ai_analysis and result.ai_analysis.dashboard_format %}
+        <div class="bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-500/30 p-6 mt-8">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                    🧠
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                        AI Dashboard-Ready Format
+                    </h3>
+                    <p class="text-sm text-gray-400">Analyzed by {{ result.ai_analysis.analyzer_model }}</p>
+                </div>
+                {% if result.ai_analysis.confidence_score %}
+                <div class="ml-auto text-right">
+                    <div class="text-2xl font-bold text-green-400">{{ (result.ai_analysis.confidence_score * 100)|round }}%</div>
+                    <div class="text-xs text-gray-400">Confidence</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- 1. Overview Section -->
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold text-yellow-400 mb-3">1. Overview</h4>
+                <div class="space-y-2 text-sm">
+                    <div><span class="text-gray-400">Task:</span> <span class="text-white">{{ result.ai_analysis.dashboard_format.overview.task }}</span></div>
+                    <div><span class="text-gray-400">Status:</span> 
+                        <span class="{% if 'Success' in result.ai_analysis.dashboard_format.overview.status %}text-green-400{% elif 'Partial' in result.ai_analysis.dashboard_format.overview.status %}text-yellow-400{% else %}text-red-400{% endif %}">
+                            {{ result.ai_analysis.dashboard_format.overview.status }}
+                        </span>
+                        — {{ result.ai_analysis.dashboard_format.overview.status_reason }}
+                    </div>
+                    <div><span class="text-gray-400">Execution:</span> <span class="text-white">{{ result.ai_analysis.dashboard_format.overview.execution }}</span></div>
+                </div>
+            </div>
+
+            <!-- 2. Performance Metrics Section -->
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold text-yellow-400 mb-3">2. Performance Metrics</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left py-2 text-gray-400">Metric</th>
+                                <th class="text-right py-2 text-gray-400">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for metric in result.ai_analysis.dashboard_format.performance_metrics %}
+                            <tr class="border-b border-gray-700/50">
+                                <td class="py-2 text-gray-300">{{ metric.metric }}</td>
+                                <td class="py-2 text-right text-white font-medium">{{ metric.value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Actionable Insights Section -->
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold text-yellow-400 mb-3">3. Actionable Insights</h4>
+                <div class="space-y-3">
+                    <div>
+                        <span class="text-green-400 font-medium">Strength:</span>
+                        <span class="text-gray-300">{{ result.ai_analysis.dashboard_format.actionable_insights.strength }}</span>
+                    </div>
+                    <div>
+                        <span class="text-red-400 font-medium">Weakness:</span>
+                        <span class="text-gray-300">{{ result.ai_analysis.dashboard_format.actionable_insights.weakness }}</span>
+                    </div>
+                    <div>
+                        <span class="text-blue-400 font-medium">Recommendation:</span>
+                        <span class="text-gray-300">{{ result.ai_analysis.dashboard_format.actionable_insights.recommendation }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Action Buttons -->
         <div class="mt-8 flex space-x-4">
             <a href="/" class="bg-accent-blue hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors">
@@ -259,4 +407,6 @@
         });
     </script>
 </body>
+</html>
+
 </html>

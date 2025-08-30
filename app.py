@@ -42,6 +42,13 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/results", StaticFiles(directory="e2e_analysis_results"), name="results")
 templates = Jinja2Templates(directory="templates")
 
+# Direct dashboard route
+@app.get("/dashboard", response_class=HTMLResponse)
+async def direct_dashboard():
+    """Direct dashboard that loads any analysis"""
+    with open("direct_dashboard.html", 'r', encoding='utf-8') as f:
+        return f.read()
+
 # In-memory job storage (for demo - use Redis/DB in production)
 jobs: Dict[str, Dict[str, Any]] = {}
 
@@ -129,6 +136,13 @@ async def get_analysis_status(job_id: str):
 async def view_results(request: Request, job_id: str):
     """Display analysis results in web interface"""
     
+    # Check if it's a timestamp (format: 20250830_154452)
+    print(f"🔍 Checking job_id: {job_id}, length: {len(job_id)}, char at 8: '{job_id[8] if len(job_id) > 8 else 'N/A'}'")
+    if len(job_id) == 15 and job_id[8] == '_':
+        print(f"🔍 Detected timestamp format, routing to view_results_by_timestamp")
+        return await view_results_by_timestamp(request, job_id)
+    
+    # Otherwise, treat as job_id
     if job_id not in jobs:
         return templates.TemplateResponse("error.html", {
             "request": request,
@@ -150,6 +164,43 @@ async def view_results(request: Request, job_id: str):
         "job_id": job_id,
         "result": job.get("result", {})
     })
+
+async def view_results_by_timestamp(request: Request, timestamp: str):
+    """Load and display results directly from JSON file by timestamp"""
+    
+    print(f"🔍 Loading results for timestamp: {timestamp}")
+    analysis_file = Path(f"e2e_analysis_results/{timestamp}/e2e_analysis.json")
+    print(f"🔍 Looking for file: {analysis_file}")
+    print(f"🔍 File exists: {analysis_file.exists()}")
+    
+    if not analysis_file.exists():
+        return templates.TemplateResponse("error.html", {
+            "request": request,
+            "error": f"Analysis results not found for timestamp {timestamp} at {analysis_file}"
+        })
+    
+    try:
+        with open(analysis_file, 'r', encoding='utf-8') as f:
+            result_data = json.load(f)
+        
+        # Create a mock job for template compatibility
+        mock_job = {
+            "status": "completed",
+            "result": result_data
+        }
+        
+        return templates.TemplateResponse("results.html", {
+            "request": request,
+            "job": mock_job,
+            "job_id": timestamp,
+            "result": result_data
+        })
+        
+    except Exception as e:
+        return templates.TemplateResponse("error.html", {
+            "request": request,
+            "error": f"Error loading analysis: {str(e)}"
+        })
 
 def setup_llm(llm_model: str = None):
     """Setup LLM with configurable provider and model from .env"""
@@ -248,8 +299,22 @@ async def run_automation_analysis(website_url: str, task_description: str, max_s
         print("🔄 Running automation...")
         start_time = time.time()
         
-        # Run automation
-        history: AgentHistoryList = await agent.run(max_steps=max_steps)
+        # Run automation with timeout protection
+        try:
+            history: AgentHistoryList = await asyncio.wait_for(
+                agent.run(max_steps=max_steps), 
+                timeout=300  # 5 minute timeout
+            )
+        except asyncio.TimeoutError:
+            print("⏰ Automation timeout reached (5 minutes)")
+            # Create a minimal history for timeout case
+            history = AgentHistoryList(history=[], usage=None)
+            # Add timeout info to the result
+            timeout_info = {
+                "timeout_reached": True,
+                "timeout_duration": 300,
+                "partial_completion": True
+            }
         
         end_time = time.time()
         total_duration = end_time - start_time
@@ -443,12 +508,31 @@ async def run_analysis_background(
         
         jobs[job_id]["progress"] = "Running browser automation..."
         
-        # Run the automation analysis
-        analysis_data = await run_automation_analysis(
-            website_url=website_url,
-            task_description=task_description,
-            max_steps=max_steps
-        )
+        # Update progress during automation
+        async def update_progress():
+            step_count = 0
+            while jobs[job_id]["status"] == "running":
+                step_count += 1
+                jobs[job_id]["progress"] = f"Running automation... (Step {step_count})"
+                await asyncio.sleep(10)  # Update every 10 seconds
+        
+        # Start progress tracking
+        progress_task = asyncio.create_task(update_progress())
+        
+        try:
+            # Run the automation analysis
+            analysis_data = await run_automation_analysis(
+                website_url=website_url,
+                task_description=task_description,
+                max_steps=max_steps
+            )
+        finally:
+            # Stop progress tracking
+            progress_task.cancel()
+            try:
+                await progress_task
+            except asyncio.CancelledError:
+                pass
         
         jobs[job_id]["progress"] = "Analyzing results with AI..."
         
@@ -467,16 +551,69 @@ async def run_analysis_background(
 
 async def analyze_automation_results(automation_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Analyze automation results with second LLM to generate insights
-    This is where we'll add the analyzer LLM in the next step
+    Analyze automation results with Gemini 2.5 Flash analyzer
     """
-    
-    # For now, return the original data with some basic analysis
-    # We'll enhance this with LLM analysis next
     
     enhanced_data = automation_data.copy()
     
-    # Add some basic computed insights
+    try:
+        # Import the analyzer
+        from analyzer_agent import analyze_automation_with_gemini
+        
+        # Get paths for analysis
+        visual_docs = automation_data.get("visual_documentation", {})
+        timestamp = visual_docs.get("timestamp")
+        
+        if timestamp:
+            screenshots_dir = Path(f"e2e_analysis_results/{timestamp}/screenshots")
+            
+            if screenshots_dir.exists():
+                print("🤖 Starting AI-powered analysis with Gemini 2.5 Flash...")
+                
+                # Get website and task info
+                test_metadata = automation_data.get("test_metadata", {})
+                website_url = test_metadata.get("website_url", "Unknown")
+                task_description = test_metadata.get("task_description", "Unknown task")
+                
+                # Run Gemini analysis
+                ai_analysis = await analyze_automation_with_gemini(
+                    automation_data=automation_data,
+                    screenshots_dir=screenshots_dir,
+                    website_url=website_url,
+                    task_description=task_description
+                )
+                
+                enhanced_data["ai_analysis"] = ai_analysis
+                
+                # Also add basic computed insights for compatibility
+                enhanced_data["ai_insights"] = generate_basic_insights(automation_data)
+                
+                # Save the enhanced data back to the JSON file
+                analysis_file = Path(f"e2e_analysis_results/{timestamp}/e2e_analysis.json")
+                if analysis_file.exists():
+                    with open(analysis_file, 'w', encoding='utf-8') as f:
+                        json.dump(enhanced_data, f, indent=2, ensure_ascii=False)
+                    print(f"💾 Enhanced analysis with AI insights saved to: {analysis_file}")
+                
+                print("✅ AI analysis completed successfully!")
+            else:
+                print("⚠️ Screenshots not found, using basic analysis")
+                enhanced_data["ai_insights"] = generate_basic_insights(automation_data)
+        else:
+            print("⚠️ No timestamp found, using basic analysis")
+            enhanced_data["ai_insights"] = generate_basic_insights(automation_data)
+            
+    except Exception as e:
+        print(f"❌ AI analysis failed: {e}")
+        print("🔄 Falling back to basic analysis")
+        enhanced_data["ai_insights"] = generate_basic_insights(automation_data)
+        enhanced_data["ai_analysis_error"] = str(e)
+    
+    return enhanced_data
+
+def generate_basic_insights(automation_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Generate basic insights when AI analysis is not available"""
+    
     if "performance_metrics" in automation_data:
         metrics = automation_data["performance_metrics"]
         
@@ -491,14 +628,21 @@ async def analyze_automation_results(automation_data: Dict[str, Any]) -> Dict[st
             metrics.get("efficiency_score", 0) * efficiency_weight
         ) * 100
         
-        enhanced_data["ai_insights"] = {
+        return {
             "overall_grade": round(overall_grade, 1),
             "grade_letter": get_grade_letter(overall_grade),
             "key_findings": generate_key_findings(automation_data),
-            "recommendations": generate_recommendations(automation_data)
+            "recommendations": generate_recommendations(automation_data),
+            "analysis_type": "basic"
         }
     
-    return enhanced_data
+    return {
+        "overall_grade": 0,
+        "grade_letter": "F",
+        "key_findings": ["No data available for analysis"],
+        "recommendations": ["Unable to generate recommendations"],
+        "analysis_type": "basic"
+    }
 
 def get_grade_letter(score: float) -> str:
     """Convert numeric score to letter grade"""

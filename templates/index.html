@@ -122,7 +122,7 @@
                         type="submit"
                         class="w-full bg-accent-blue hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
                     >
-                        <span>▷ Start Automation</span>
+                        <span>▷ Start AI End2End Test</span>
                     </button>
                 </form>
             </div>
@@ -276,7 +276,7 @@
                 } catch (error) {
                     console.error('Status polling error:', error);
                 }
-            }, 2000);
+            }, 5000); // Reduced polling frequency from 2s to 5s
         }
 
         function displayResults(result) {
@@ -285,14 +285,131 @@
             // Update KPI Dashboard
             const kpiDashboard = document.getElementById('kpiDashboard');
             
-            if (result.performance_metrics) {
+            // Use AI analysis data if available, otherwise fall back to basic metrics
+            const aiAnalysis = result.ai_analysis;
+            const dashboardFormat = aiAnalysis?.dashboard_format;
                 const metrics = result.performance_metrics;
-                const aiInsights = result.ai_insights || {};
+            
+            // Extract data from AI analysis dashboard format
+            let successRate = "0%";
+            let errorRate = "0%";
+            let avgStepTime = "0s";
+            
+            if (dashboardFormat?.performance_metrics) {
+                const perfMetrics = dashboardFormat.performance_metrics;
+                const successMetric = perfMetrics.find(m => m.metric === "Success Rate");
+                const errorMetric = perfMetrics.find(m => m.metric === "Error Rate");
+                const stepTimeMetric = perfMetrics.find(m => m.metric === "Avg Step Time");
                 
+                successRate = successMetric?.value || `${Math.round(metrics.success_rate * 100)}%`;
+                errorRate = errorMetric?.value || `${Math.round(metrics.error_rate * 100)}%`;
+                avgStepTime = stepTimeMetric?.value || `${metrics.average_step_duration || 0}s`;
+            } else if (metrics) {
+                // Fall back to basic metrics
+                successRate = `${Math.round(metrics.success_rate * 100)}%`;
+                errorRate = `${Math.round(metrics.error_rate * 100)}%`;
+                avgStepTime = `${metrics.average_step_duration || 0}s`;
+            }
+            
+            // Get overall status and grade from AI analysis
+            const overallStatus = dashboardFormat?.overview?.status || (result.execution_summary?.overall_success ? "Success" : "Failed");
+            const statusColor = overallStatus.toLowerCase().includes('success') ? 'text-green-400' : 
+                               overallStatus.toLowerCase().includes('partial') ? 'text-yellow-400' : 'text-red-400';
+            
+            // Calculate proper grade (not from ai_insights which has wrong data)
+            let gradeInfo = { letter: "A", score: 85 }; // Default for success
+            if (aiAnalysis?.confidence_score) {
+                const score = Math.round(aiAnalysis.confidence_score * 100);
+                gradeInfo.score = score;
+                gradeInfo.letter = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 60 ? "D" : "F";
+            }
+            
+            // Display clean Dashboard-Ready Format (based on direct_dashboard.html)
+            if (aiAnalysis && aiAnalysis.dashboard_format) {
+                const dashboard = aiAnalysis.dashboard_format;
+                
+                kpiDashboard.innerHTML = `
+                    <div class="bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-500/30 p-6">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                                🧠
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                                    Dashboard-Ready Format
+                                </h3>
+                                <p class="text-sm text-gray-400">Analyzed by ${aiAnalysis.analyzer_model || 'gemini-2.5-flash'}</p>
+                            </div>
+                            <div class="ml-auto text-right">
+                                <div class="text-2xl font-bold text-green-400">${gradeInfo.score}%</div>
+                                <div class="text-xs text-gray-400">Confidence</div>
+                            </div>
+                        </div>
+
+                        <!-- 1. Overview Section -->
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-yellow-400 mb-3">1. Overview</h4>
+                            <div class="space-y-2 text-sm">
+                                <div><span class="text-gray-400">Task:</span> <span class="text-white">${dashboard.overview.task}</span></div>
+                                <div><span class="text-gray-400">Status:</span> 
+                                    <span class="${statusColor}">
+                                        ${dashboard.overview.status}
+                                    </span>
+                                    — ${dashboard.overview.status_reason}
+                                </div>
+                                <div><span class="text-gray-400">Execution:</span> <span class="text-white">${dashboard.overview.execution}</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Performance Metrics Section -->
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-yellow-400 mb-3">2. Performance Metrics</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b border-gray-600">
+                                            <th class="text-left py-2 text-gray-400">Metric</th>
+                                            <th class="text-right py-2 text-gray-400">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${dashboard.performance_metrics.map(metric => `
+                                        <tr class="border-b border-gray-700/50">
+                                            <td class="py-2 text-gray-300">${metric.metric}</td>
+                                            <td class="py-2 text-right text-white font-medium">${metric.value}</td>
+                                        </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 3. Actionable Insights Section -->
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-yellow-400 mb-3">3. Actionable Insights</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <span class="text-green-400 font-medium">Strength:</span>
+                                    <span class="text-gray-300">${dashboard.actionable_insights.strength.replace(/\*\*/g, '')}</span>
+                                </div>
+                                <div>
+                                    <span class="text-red-400 font-medium">Weakness:</span>
+                                    <span class="text-gray-300">${dashboard.actionable_insights.weakness.replace(/\*\*/g, '')}</span>
+                                </div>
+                                <div>
+                                    <span class="text-blue-400 font-medium">Recommendation:</span>
+                                    <span class="text-gray-300">${dashboard.actionable_insights.recommendation.replace(/\*\*/g, '')}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Fallback to simple KPI dashboard when AI analysis is not available
                 kpiDashboard.innerHTML = `
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
-                            <div class="text-2xl font-bold text-green-400">${Math.round(metrics.success_rate * 100)}%</div>
+                            <div class="text-2xl font-bold text-green-400">${successRate}</div>
                             <div class="text-sm text-gray-500">Success Rate</div>
                         </div>
                         <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
@@ -300,7 +417,7 @@
                             <div class="text-sm text-gray-500">Steps Taken</div>
                         </div>
                         <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
-                            <div class="text-2xl font-bold text-yellow-400">${Math.round(metrics.error_rate * 100)}%</div>
+                            <div class="text-2xl font-bold text-yellow-400">${errorRate}</div>
                             <div class="text-sm text-gray-500">Error Rate</div>
                         </div>
                         <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
@@ -309,24 +426,18 @@
                         </div>
                     </div>
                     
-                    ${aiInsights.overall_grade ? `
                     <div class="bg-dark-bg rounded-lg p-4 border border-dark-border mb-4">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-sm font-medium">Overall Grade</span>
-                            <span class="text-2xl font-bold text-accent-blue">${aiInsights.grade_letter}</span>
+                            <span class="text-2xl font-bold text-accent-blue">${gradeInfo.letter}</span>
                         </div>
-                        <div class="text-sm text-gray-400">${aiInsights.overall_grade}/100</div>
+                        <div class="text-sm text-gray-400">${gradeInfo.score}/100</div>
+                        <div class="text-xs ${statusColor} mt-1">${overallStatus}</div>
                     </div>
-                    ` : ''}
                     
-                    ${aiInsights.key_findings ? `
-                    <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
-                        <h4 class="font-medium mb-2">Key Findings</h4>
-                        <ul class="text-sm text-gray-300 space-y-1">
-                            ${aiInsights.key_findings.map(finding => `<li>${finding}</li>`).join('')}
-                        </ul>
+                    <div class="text-center text-gray-400 py-4">
+                        <p class="text-sm">AI analysis not available - using basic metrics</p>
                     </div>
-                    ` : ''}
                 `;
             }
             
@@ -342,12 +453,59 @@
                 `;
             }
             
-            // Show link to detailed results
+            // Show link to detailed results (disabled auto-popup)
+            // setTimeout(() => {
+            //     if (confirm('Analysis complete! View detailed results page?')) {
+            //         window.open(`/results/${currentJobId}`, '_blank');
+            //     }
+            // }, 1000);
+            
+            // Instead, show a non-intrusive notification
+            showResultsNotification(currentJobId);
+        }
+
+        function showResultsNotification(jobId) {
+            // Create a non-intrusive notification banner
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center space-x-3';
+            notification.innerHTML = `
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                <span>Analysis complete!</span>
+                <button onclick="window.open('/results/${jobId}', '_blank')" class="bg-green-700 hover:bg-green-800 px-3 py-1 rounded text-sm transition-colors">
+                    View Results
+                </button>
+                <button onclick="this.parentElement.remove()" class="text-green-200 hover:text-white ml-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 10 seconds
             setTimeout(() => {
-                if (confirm('Analysis complete! View detailed results page?')) {
-                    window.open(`/results/${currentJobId}`, '_blank');
+                if (notification.parentElement) {
+                    notification.remove();
                 }
-            }, 1000);
+            }, 10000);
+        }
+
+        function toggleRawAnalysisKPI() {
+            const content = document.getElementById('rawAnalysisKPIContent');
+            const icon = document.getElementById('rawAnalysisKPIIcon');
+            
+            if (content && icon) {
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
         }
     </script>
 </body>
