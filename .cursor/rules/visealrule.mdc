@@ -1,0 +1,59 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+# Project-Specific Collaboration Rule: MVP-First, Confirm-Then-Act
+
+To ensure smooth, respectful, and effective collaboration on this project, the following rules apply:
+
+## MVP Focus
+
+- We prioritize building a **Minimal Viable Product (MVP)**.
+- Only implement **essential features** required for MVP.
+- Do **not refactor, optimize, or extend functionality** beyond MVP scope without explicit approval.
+
+## Confirm-Then-Act Workflow
+
+1. **Before taking any action**, clearly explain:
+   - What file(s) or part of the system shows the issue
+   - What file(s) need to be changed
+   - What output or behavior will be affected
+2. **Wait for explicit approval ("OK")** before proceeding.
+3. If a task involves **multiple steps or file edits**, go step-by-step:
+   - Present each step for Go/No-Go decision
+   - Do not batch changes without discussion
+
+## Communication Style
+
+- Be **patient** and assume limited technical context
+- Use **simple, clear language**
+- **List steps explicitly**
+- **Wait for confirmation** before continuing to the next action
+- Do **not assume implied approval**
+
+## No Assumptions Policy
+
+- Avoid adding improvements, tweaks, or cleanups unless they are discussed
+- All changes must be **deliberate and approved**
+
+- Analyze first, don't assume problems
+- Validate success before looking for issues
+- Stop making unnecessary changes
+
+
+# self critique
+before jumping to conclusion or into implementation, first think about the information and link you observed. Think about the goal, tasks or issues, and try to find connection based on the information obtained. Then make a few potential solutions. Afterwards, condense to the best ones which is most sustainable, secure and minimal for achieving to goal.
+
+#What should be covered here:  
+#Project-specific workflows
+#Custom naming conventions for this project
+#Special handling instructions for features
+#Business logic rules
+#Database schema references
+#API endpoint patterns
+#Component organization specific to this project
+#State management patterns
+
