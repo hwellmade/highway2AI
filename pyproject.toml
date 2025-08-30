@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "e2e-automation-analyzer"
 version = "0.1.0"
-description = "E2E Automation Analyzer using browser-use for website AI agent testing"
+description = "Highway2AI: E2E Automation Analyzer using browser-use for website AI agent testing"
 authors = ["Your Name <your.email@example.com>"]
 readme = "README.md"
 package-mode = false

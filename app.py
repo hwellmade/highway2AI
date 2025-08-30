@@ -1,5 +1,5 @@
 """
-E2E Automation Analyzer - FastAPI Web Application
+Highway2AI: E2E Automation Analyzer - FastAPI Web Application
 
 A web interface for analyzing website automation performance using browser-use
 and AI-powered analysis. Built for hackathon demo.
@@ -32,13 +32,14 @@ load_dotenv()
 
 # FastAPI app setup
 app = FastAPI(
-    title="E2E Automation Analyzer",
+    title="Highway2AI: E2E Automation Analyzer",
     description="Analyze website automation performance with AI agents",
     version="1.0.0"
 )
 
 # Static files and templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 app.mount("/results", StaticFiles(directory="e2e_analysis_results"), name="results")
 templates = Jinja2Templates(directory="templates")
 

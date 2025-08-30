@@ -1,5 +1,5 @@
 """
-E2E Automation Analyzer Agent
+Highway2AI: E2E Automation Analyzer Agent
 
 Uses Gemini 2.5 Flash to analyze automation results with visual and data analysis.
 """
@@ -429,5 +429,5 @@ def extract_confidence_score(analysis_text: str) -> float:
 
 if __name__ == "__main__":
     # Example usage
-    print("E2E Automation Analyzer Agent ready!")
+    print("Highway2AI: E2E Automation Analyzer Agent ready!")
     print("Use analyze_automation_with_gemini() to analyze results.")

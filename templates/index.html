@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E2E Automation Analyzer</title>
+    <title>Highway2AI: E2E Automation Analyzer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -27,10 +28,10 @@
     <header class="bg-dark-card border-b border-dark-border p-4">
         <div class="container mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-accent-blue rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold">E2E</span>
+                <div class="w-16 h-16 rounded-lg overflow-hidden flex items-center justify-center bg-white/10">
+                    <img src="/assets/car.png" alt="Highway2AI Logo" class="w-10 h-10 object-contain">
                 </div>
-                <h1 class="text-xl font-semibold">E2E Automation Analyzer</h1>
+                <h1 class="text-xl font-semibold">Highway2AI: E2E Automation Analyzer</h1>
             </div>
             <div class="text-sm text-gray-400">
                 Beta v1.0
@@ -364,23 +365,33 @@
                         <!-- 2. Performance Metrics Section -->
                         <div class="mb-6">
                             <h4 class="text-lg font-semibold text-yellow-400 mb-3">2. Performance Metrics</h4>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-sm">
-                                    <thead>
-                                        <tr class="border-b border-gray-600">
-                                            <th class="text-left py-2 text-gray-400">Metric</th>
-                                            <th class="text-right py-2 text-gray-400">Value</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${dashboard.performance_metrics.map(metric => `
-                                        <tr class="border-b border-gray-700/50">
-                                            <td class="py-2 text-gray-300">${metric.metric}</td>
-                                            <td class="py-2 text-right text-white font-medium">${metric.value}</td>
-                                        </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Metrics Table -->
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-gray-600">
+                                                <th class="text-left py-2 text-gray-400">Metric</th>
+                                                <th class="text-right py-2 text-gray-400">Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${dashboard.performance_metrics.map(metric => `
+                                            <tr class="border-b border-gray-700/50">
+                                                <td class="py-2 text-gray-300">${metric.metric}</td>
+                                                <td class="py-2 text-right text-white font-medium">${metric.value}</td>
+                                            </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Pie Chart -->
+                                <div class="flex items-center justify-center">
+                                    <div class="relative w-48 h-48">
+                                        <canvas id="metricsChart" width="192" height="192"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -404,6 +415,12 @@
                         </div>
                     </div>
                 `;
+                
+                // Create pie chart after a short delay to ensure canvas is ready
+                setTimeout(() => {
+                    createMetricsPieChart(dashboard.performance_metrics);
+                }, 100);
+                
             } else {
                 // Fallback to simple KPI dashboard when AI analysis is not available
                 kpiDashboard.innerHTML = `
@@ -506,6 +523,106 @@
                     icon.style.transform = 'rotate(0deg)';
                 }
             }
+        }
+
+        let metricsChart = null; // Global chart variable
+
+        function createMetricsPieChart(metrics) {
+            const canvas = document.getElementById('metricsChart');
+            if (!canvas) return;
+            
+            // Destroy existing chart if it exists
+            if (metricsChart) {
+                metricsChart.destroy();
+            }
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Extract metric values and convert percentages to numbers
+            const labels = [];
+            const data = [];
+            const colors = [];
+            
+            metrics.forEach(metric => {
+                let value = parseFloat(metric.value.replace('%', '').replace('s', ''));
+                
+                // Handle different metric types
+                if (metric.metric === 'Success Rate') {
+                    labels.push('Success');
+                    data.push(value);
+                    colors.push('#10B981'); // Green
+                } else if (metric.metric === 'Error Rate') {
+                    labels.push('Errors');
+                    data.push(value);
+                    colors.push('#EF4444'); // Red
+                } else if (metric.metric === 'Avg Step Time') {
+                    // For step time, show it as a portion of total time
+                    // Normalize to a 0-100 scale for visualization
+                    const normalizedTime = Math.min(value * 5, 100); // Scale factor for visualization
+                    labels.push('Step Time');
+                    data.push(normalizedTime);
+                    colors.push('#8B5CF6'); // Purple
+                }
+            });
+            
+            // Create the pie chart
+            metricsChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color + '80'), // Add transparency
+                        borderWidth: 2,
+                        hoverBackgroundColor: colors.map(color => color + 'CC'),
+                        hoverBorderColor: colors,
+                        hoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#D1D5DB', // Gray-300
+                                font: {
+                                    size: 12
+                                },
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#374151', // Gray-700
+                            titleColor: '#F9FAFB', // Gray-50
+                            bodyColor: '#F9FAFB', // Gray-50
+                            borderColor: '#6B7280', // Gray-500
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const metric = metrics[context.dataIndex];
+                                    return `${context.label}: ${metric.value}`;
+                                }
+                            }
+                        }
+                    },
+                    elements: {
+                        arc: {
+                            borderWidth: 2
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
         }
     </script>
 </body>
