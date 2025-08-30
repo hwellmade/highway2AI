@@ -41,7 +41,7 @@
 
     <!-- Main Content -->
     <div class="container mx-auto p-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             <!-- Left Panel - Input Configuration -->
             <div class="bg-dark-card rounded-lg border border-dark-border p-6">
@@ -128,17 +128,21 @@
                 </form>
             </div>
 
-            <!-- Right Panel - Results Display -->
-            <div class="space-y-6">
+            <!-- Right Panel - Results Display (Takes 2 columns) -->
+            <div class="lg:col-span-2 space-y-6">
                 
-                <!-- Screenshot/Video Panel -->
+                <!-- Screenshot Gallery Panel -->
                 <div class="bg-dark-card rounded-lg border border-dark-border p-6">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <span class="bg-accent-yellow text-black px-2 py-1 rounded text-sm font-medium">Screenshot</span>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-accent-yellow text-black px-2 py-1 rounded text-sm font-medium">Step Navigator</span>
+                        <div id="stepCounter" class="text-sm text-gray-400 hidden">
+                            Step <span id="currentStep">1</span> of <span id="totalSteps">1</span>
+                        </div>
                     </div>
                     
-                    <div id="screenshotPanel" class="bg-dark-bg rounded-lg border border-dark-border h-64 flex items-center justify-center">
-                        <div class="text-center text-gray-400">
+                    <!-- Screenshot Display -->
+                    <div id="screenshotPanel" class="bg-dark-bg rounded-lg border border-dark-border h-80 flex items-center justify-center relative">
+                        <div id="screenshotPlaceholder" class="text-center text-gray-400">
                             <div class="w-16 h-16 mx-auto mb-4 bg-dark-border rounded-lg flex items-center justify-center">
                                 <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
@@ -146,6 +150,45 @@
                             </div>
                             <h3 class="font-medium mb-2">No Automation Running</h3>
                             <p class="text-sm">Start an automation session to see results here.</p>
+                        </div>
+                        
+                        <!-- Screenshot Image -->
+                        <img id="currentScreenshot" class="hidden w-full h-full object-contain rounded-lg" alt="Current Step Screenshot">
+                        
+                        <!-- Navigation Buttons -->
+                        <button id="prevBtn" class="hidden absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <button id="nextBtn" class="hidden absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Step Information Panel -->
+                    <div id="stepInfoPanel" class="hidden mt-4 bg-dark-bg rounded-lg border border-dark-border p-4">
+                        <div class="space-y-3">
+                            <div>
+                                <h4 class="text-sm font-medium text-blue-400 mb-2">🎯 Goal Setting</h4>
+                                <p id="stepGoal" class="text-sm text-gray-300">Loading...</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-green-400 mb-2">🧠 AI Thinking Process</h4>
+                                <p id="stepThinking" class="text-sm text-gray-300">Loading...</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-xs">
+                                <div>
+                                    <span class="text-gray-400">URL:</span>
+                                    <span id="stepUrl" class="text-gray-300 break-all">-</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400">Page Title:</span>
+                                    <span id="stepTitle" class="text-gray-300">-</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -458,16 +501,9 @@
                 `;
             }
             
-            // Update Screenshot Panel
-            const screenshotPanel = document.getElementById('screenshotPanel');
-            if (result.visual_documentation?.enhanced_gif_created && result.visual_documentation?.enhanced_gif_with_thinking) {
-                screenshotPanel.innerHTML = `
-                    <div class="w-full h-full">
-                        <img src="${result.visual_documentation.enhanced_gif_with_thinking}" 
-                             alt="Automation GIF" 
-                             class="w-full h-full object-contain rounded-lg">
-                    </div>
-                `;
+            // Update Screenshot Gallery
+            if (result.detailed_steps && result.detailed_steps.length > 0) {
+                initializeScreenshotGallery(result);
             }
             
             // Show link to detailed results (disabled auto-popup)
@@ -526,6 +562,8 @@
         }
 
         let metricsChart = null; // Global chart variable
+        let galleryData = null; // Global gallery data
+        let currentStepIndex = 0; // Current step index
 
         function createMetricsPieChart(metrics) {
             const canvas = document.getElementById('metricsChart');
@@ -623,6 +661,88 @@
                     }
                 }
             });
+        }
+
+        function initializeScreenshotGallery(result) {
+            // Prepare gallery data
+            galleryData = result.detailed_steps.map((step, index) => ({
+                stepNumber: index + 1,
+                screenshot: `/results/${result.visual_documentation?.timestamp}/screenshots/step_${index + 1}.png`,
+                goalSetting: step.ai_decision_making?.goal_setting || 'No goal specified',
+                thinkingProcess: step.ai_decision_making?.thinking_process || 'No thinking process recorded',
+                url: step.browser_context?.url || 'Unknown URL',
+                title: step.browser_context?.title || 'Unknown Title',
+                hasScreenshot: step.browser_context?.has_screenshot || false
+            }));
+
+            currentStepIndex = 0;
+            
+            // Show gallery elements
+            document.getElementById('screenshotPlaceholder').classList.add('hidden');
+            document.getElementById('currentScreenshot').classList.remove('hidden');
+            document.getElementById('stepCounter').classList.remove('hidden');
+            document.getElementById('stepInfoPanel').classList.remove('hidden');
+            document.getElementById('prevBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+            
+            // Update total steps
+            document.getElementById('totalSteps').textContent = galleryData.length;
+            
+            // Set up navigation event listeners
+            document.getElementById('prevBtn').onclick = () => navigateStep(-1);
+            document.getElementById('nextBtn').onclick = () => navigateStep(1);
+            
+            // Show first step
+            showCurrentStep();
+        }
+
+        function showCurrentStep() {
+            if (!galleryData || galleryData.length === 0) return;
+            
+            const step = galleryData[currentStepIndex];
+            
+            // Update screenshot
+            const screenshot = document.getElementById('currentScreenshot');
+            screenshot.src = step.screenshot;
+            screenshot.onerror = () => {
+                // If screenshot fails to load, show placeholder
+                screenshot.style.display = 'none';
+                document.getElementById('screenshotPlaceholder').classList.remove('hidden');
+            };
+            screenshot.onload = () => {
+                screenshot.style.display = 'block';
+                document.getElementById('screenshotPlaceholder').classList.add('hidden');
+            };
+            
+            // Update step counter
+            document.getElementById('currentStep').textContent = currentStepIndex + 1;
+            
+            // Update step information
+            document.getElementById('stepGoal').textContent = step.goalSetting;
+            document.getElementById('stepThinking').textContent = step.thinkingProcess;
+            document.getElementById('stepUrl').textContent = step.url;
+            document.getElementById('stepTitle').textContent = step.title;
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.style.opacity = currentStepIndex === 0 ? '0.5' : '1';
+            nextBtn.style.opacity = currentStepIndex === galleryData.length - 1 ? '0.5' : '1';
+            
+            prevBtn.disabled = currentStepIndex === 0;
+            nextBtn.disabled = currentStepIndex === galleryData.length - 1;
+        }
+
+        function navigateStep(direction) {
+            if (!galleryData) return;
+            
+            const newIndex = currentStepIndex + direction;
+            
+            if (newIndex >= 0 && newIndex < galleryData.length) {
+                currentStepIndex = newIndex;
+                showCurrentStep();
+            }
         }
     </script>
 </body>
