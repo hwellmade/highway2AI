@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - E2E Automation Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#1a1b23',
+                        'dark-card': '#2a2d3a',
+                        'dark-border': '#3f4451',
+                        'accent-blue': '#3b82f6',
+                        'accent-yellow': '#fbbf24'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-dark-card border-b border-dark-border p-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="/" class="w-8 h-8 bg-accent-blue rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors">
+                    <span class="text-white font-bold">E2E</span>
+                </a>
+                <h1 class="text-xl font-semibold">Analysis Results</h1>
+            </div>
+            <div class="text-sm text-gray-400">
+                Job ID: {{ job_id[:8] }}...
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-6">
+        <!-- Summary Header -->
+        <div class="bg-dark-card rounded-lg border border-dark-border p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h2 class="text-xl font-semibold mb-4">Test Summary</h2>
+                    <div class="space-y-2">
+                        <div><span class="text-gray-400">Website:</span> {{ job.website_url }}</div>
+                        <div><span class="text-gray-400">Task:</span> {{ job.task_description }}</div>
+                        <div><span class="text-gray-400">Model:</span> {{ job.llm_model }}</div>
+                        <div><span class="text-gray-400">Duration:</span> {{ result.test_metadata.total_duration_seconds }}s</div>
+                    </div>
+                </div>
+                
+                {% if result.ai_insights %}
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-accent-blue text-white text-3xl font-bold mb-2">
+                        {{ result.ai_insights.grade_letter }}
+                    </div>
+                    <div class="text-lg font-semibold">Overall Grade</div>
+                    <div class="text-gray-400">{{ result.ai_insights.overall_grade }}/100</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Left Column -->
+            <div class="space-y-6">
+                
+                <!-- Performance Metrics -->
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <h3 class="text-lg font-semibold mb-4">📊 Performance Metrics</h3>
+                    
+                    {% if result.performance_metrics %}
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-dark-bg rounded-lg p-4">
+                            <div class="text-2xl font-bold text-green-400">{{ (result.performance_metrics.success_rate * 100)|round }}%</div>
+                            <div class="text-sm text-gray-500">Success Rate</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4">
+                            <div class="text-2xl font-bold text-blue-400">{{ result.execution_summary.total_steps }}</div>
+                            <div class="text-sm text-gray-500">Total Steps</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4">
+                            <div class="text-2xl font-bold text-yellow-400">{{ (result.performance_metrics.error_rate * 100)|round }}%</div>
+                            <div class="text-sm text-gray-500">Error Rate</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4">
+                            <div class="text-2xl font-bold text-purple-400">{{ result.performance_metrics.efficiency_score|round(2) }}</div>
+                            <div class="text-sm text-gray-500">Efficiency</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Key Findings -->
+                {% if result.ai_insights and result.ai_insights.key_findings %}
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <h3 class="text-lg font-semibold mb-4">🔍 Key Findings</h3>
+                    <ul class="space-y-2">
+                        {% for finding in result.ai_insights.key_findings %}
+                        <li class="flex items-start space-x-2">
+                            <span class="text-accent-blue">•</span>
+                            <span>{{ finding }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Recommendations -->
+                {% if result.ai_insights and result.ai_insights.recommendations %}
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <h3 class="text-lg font-semibold mb-4">💡 Recommendations</h3>
+                    <ul class="space-y-2">
+                        {% for rec in result.ai_insights.recommendations %}
+                        <li class="flex items-start space-x-2">
+                            <span class="text-accent-yellow">→</span>
+                            <span>{{ rec }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+                
+                <!-- Automation GIF -->
+                {% if result.visual_documentation.enhanced_gif_created %}
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <h3 class="text-lg font-semibold mb-4">🎬 Automation Recording</h3>
+                    <div class="bg-dark-bg rounded-lg p-4">
+                        <img src="/results/enhanced_automation_with_thinking.gif" 
+                             alt="Automation GIF with AI Thinking" 
+                             class="w-full rounded-lg">
+                        <p class="text-sm text-gray-400 mt-2 text-center">Enhanced GIF with AI thinking process</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Screenshots Gallery -->
+                {% if result.visual_documentation.individual_screenshots > 0 %}
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <h3 class="text-lg font-semibold mb-4">📸 Screenshots ({{ result.visual_documentation.individual_screenshots }})</h3>
+                    <div class="grid grid-cols-2 gap-2 max-h-96 overflow-y-auto">
+                        {% for i in range(1, result.visual_documentation.individual_screenshots + 1) %}
+                        <div class="bg-dark-bg rounded-lg p-2">
+                            <img src="/results/screenshots/step_{{ i }}.png" 
+                                 alt="Step {{ i }}" 
+                                 class="w-full rounded cursor-pointer hover:opacity-80 transition-opacity"
+                                 onclick="openImageModal(this.src)">
+                            <p class="text-xs text-gray-400 text-center mt-1">Step {{ i }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Execution Details -->
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <h3 class="text-lg font-semibold mb-4">⚙️ Execution Details</h3>
+                    
+                    {% if result.execution_summary %}
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Final Result:</span>
+                            <span class="{% if result.execution_summary.overall_success %}text-green-400{% else %}text-red-400{% endif %}">
+                                {% if result.execution_summary.overall_success %}✅ Success{% else %}❌ Failed{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Screenshots Captured:</span>
+                            <span>{{ result.execution_summary.screenshots_captured }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Errors Encountered:</span>
+                            <span class="{% if result.execution_summary.total_errors > 0 %}text-yellow-400{% else %}text-green-400{% endif %}">
+                                {{ result.execution_summary.total_errors }}
+                            </span>
+                        </div>
+                        {% if result.resource_usage and result.resource_usage.total_tokens %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Tokens Used:</span>
+                            <span>{{ result.resource_usage.total_tokens }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex space-x-4">
+            <a href="/" class="bg-accent-blue hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors">
+                ← New Analysis
+            </a>
+            <button onclick="downloadResults()" class="bg-dark-card hover:bg-gray-600 border border-dark-border text-white px-6 py-3 rounded-lg transition-colors">
+                📄 Download JSON
+            </button>
+            <button onclick="shareResults()" class="bg-dark-card hover:bg-gray-600 border border-dark-border text-white px-6 py-3 rounded-lg transition-colors">
+                🔗 Share Results
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden flex items-center justify-center z-50" onclick="closeImageModal()">
+        <div class="max-w-4xl max-h-4xl p-4">
+            <img id="modalImage" src="" alt="Screenshot" class="max-w-full max-h-full rounded-lg">
+        </div>
+    </div>
+
+    <script>
+        function openImageModal(src) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('imageModal').classList.remove('hidden');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
+        function downloadResults() {
+            // Create download link for JSON results
+            const data = {{ result|tojson }};
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'e2e_analysis_{{ job_id }}.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareResults() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Results URL copied to clipboard!');
+            }).catch(() => {
+                prompt('Copy this URL to share:', url);
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E2E Automation Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#1a1b23',
+                        'dark-card': '#2a2d3a',
+                        'dark-border': '#3f4451',
+                        'accent-blue': '#3b82f6',
+                        'accent-yellow': '#fbbf24'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-bg text-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-dark-card border-b border-dark-border p-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-accent-blue rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold">E2E</span>
+                </div>
+                <h1 class="text-xl font-semibold">E2E Automation Analyzer</h1>
+            </div>
+            <div class="text-sm text-gray-400">
+                Beta v1.0
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Left Panel - Input Configuration -->
+            <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                <div class="flex items-center space-x-2 mb-6">
+                    <span class="bg-accent-yellow text-black px-2 py-1 rounded text-sm font-medium">Input</span>
+                </div>
+                
+                <h2 class="text-lg font-semibold mb-4">▷ Configure Automation</h2>
+                
+                <form id="analysisForm" class="space-y-4">
+                    <!-- Website URL -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Target URL</label>
+                        <input 
+                            type="url" 
+                            name="website_url" 
+                            placeholder="https://example.com"
+                            class="w-full bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-accent-blue"
+                            required
+                        >
+                        <p class="text-xs text-gray-400 mt-1">The website you want to test</p>
+                    </div>
+
+                    <!-- Task Description -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Goal (Natural Language)</label>
+                        <textarea 
+                            name="task_description" 
+                            rows="3"
+                            placeholder="Navigate to the login page, fill out the form with test credentials, and verify successful login"
+                            class="w-full bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-accent-blue resize-none"
+                            required
+                        ></textarea>
+                        <p class="text-xs text-gray-400 mt-1">Describe what you want to accomplish</p>
+                    </div>
+
+                    <!-- LLM Model Selection -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">LLM Model</label>
+                        <select 
+                            name="llm_model"
+                            class="w-full bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-white focus:outline-none focus:border-accent-blue"
+                        >
+                            <option value="gpt-4o-mini">GPT-4o Mini (OpenAI)</option>
+                            <option value="gpt-4o">GPT-4o (OpenAI)</option>
+                            <option value="gemini-2.0-flash">Gemini 2.0 Flash (Google)</option>
+                            <option value="openai/gpt-4o-mini">GPT-4o Mini (OpenRouter)</option>
+                        </select>
+                    </div>
+
+                    <!-- Max Steps -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Max Steps</label>
+                        <input 
+                            type="number" 
+                            name="max_steps" 
+                            value="10"
+                            min="1" 
+                            max="50"
+                            class="w-full bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-white focus:outline-none focus:border-accent-blue"
+                        >
+                        <p class="text-xs text-gray-400 mt-1">Maximum automation steps (1-50)</p>
+                    </div>
+
+                    <!-- Headless Mode Toggle -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium">Headless Mode</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="headless" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-blue"></div>
+                        </label>
+                    </div>
+                    <p class="text-xs text-gray-400">Run browser in background</p>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit"
+                        class="w-full bg-accent-blue hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+                    >
+                        <span>▷ Start Automation</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Panel - Results Display -->
+            <div class="space-y-6">
+                
+                <!-- Screenshot/Video Panel -->
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="bg-accent-yellow text-black px-2 py-1 rounded text-sm font-medium">Screenshot</span>
+                    </div>
+                    
+                    <div id="screenshotPanel" class="bg-dark-bg rounded-lg border border-dark-border h-64 flex items-center justify-center">
+                        <div class="text-center text-gray-400">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-dark-border rounded-lg flex items-center justify-center">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-medium mb-2">No Automation Running</h3>
+                            <p class="text-sm">Start an automation session to see results here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPIs Dashboard -->
+                <div class="bg-dark-card rounded-lg border border-dark-border p-6">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="bg-accent-yellow text-black px-2 py-1 rounded text-sm font-medium">Dashboard of KPIs</span>
+                    </div>
+                    
+                    <div id="kpiDashboard" class="space-y-4">
+                        <!-- Placeholder KPIs -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                <div class="text-2xl font-bold text-gray-400">--</div>
+                                <div class="text-sm text-gray-500">Success Rate</div>
+                            </div>
+                            <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                <div class="text-2xl font-bold text-gray-400">--</div>
+                                <div class="text-sm text-gray-500">Steps Taken</div>
+                            </div>
+                            <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                <div class="text-2xl font-bold text-gray-400">--</div>
+                                <div class="text-sm text-gray-500">Error Rate</div>
+                            </div>
+                            <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                                <div class="text-2xl font-bold text-gray-400">--</div>
+                                <div class="text-sm text-gray-500">Duration</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center text-gray-400 py-8">
+                            <p class="text-sm">KPI metrics will appear here after analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Panel (Hidden by default) -->
+        <div id="statusPanel" class="hidden mt-6 bg-dark-card rounded-lg border border-dark-border p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-accent-blue"></div>
+                <h3 class="text-lg font-semibold">Analysis in Progress</h3>
+            </div>
+            <div id="statusText" class="text-gray-400 mb-4">Initializing...</div>
+            <div class="bg-dark-bg rounded-full h-2">
+                <div id="progressBar" class="bg-accent-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentJobId = null;
+        let statusInterval = null;
+
+        // Form submission
+        document.getElementById('analysisForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            try {
+                showStatus('Starting analysis...');
+                
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.job_id) {
+                    currentJobId = result.job_id;
+                    startStatusPolling();
+                } else {
+                    showError('Failed to start analysis');
+                }
+                
+            } catch (error) {
+                showError('Error: ' + error.message);
+            }
+        });
+
+        function showStatus(message) {
+            document.getElementById('statusPanel').classList.remove('hidden');
+            document.getElementById('statusText').textContent = message;
+        }
+
+        function hideStatus() {
+            document.getElementById('statusPanel').classList.add('hidden');
+            if (statusInterval) {
+                clearInterval(statusInterval);
+                statusInterval = null;
+            }
+        }
+
+        function showError(message) {
+            hideStatus();
+            alert(message); // Simple error handling for demo
+        }
+
+        function startStatusPolling() {
+            if (!currentJobId) return;
+            
+            statusInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/status/${currentJobId}`);
+                    const status = await response.json();
+                    
+                    document.getElementById('statusText').textContent = status.progress;
+                    
+                    // Update progress bar based on status
+                    let progress = 0;
+                    if (status.status === 'running') progress = 50;
+                    else if (status.status === 'completed') progress = 100;
+                    else if (status.status === 'failed') progress = 0;
+                    
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    
+                    if (status.status === 'completed') {
+                        hideStatus();
+                        displayResults(status.result);
+                    } else if (status.status === 'failed') {
+                        hideStatus();
+                        showError('Analysis failed: ' + status.error);
+                    }
+                    
+                } catch (error) {
+                    console.error('Status polling error:', error);
+                }
+            }, 2000);
+        }
+
+        function displayResults(result) {
+            if (!result) return;
+            
+            // Update KPI Dashboard
+            const kpiDashboard = document.getElementById('kpiDashboard');
+            
+            if (result.performance_metrics) {
+                const metrics = result.performance_metrics;
+                const aiInsights = result.ai_insights || {};
+                
+                kpiDashboard.innerHTML = `
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                            <div class="text-2xl font-bold text-green-400">${Math.round(metrics.success_rate * 100)}%</div>
+                            <div class="text-sm text-gray-500">Success Rate</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                            <div class="text-2xl font-bold text-blue-400">${result.execution_summary?.total_steps || 0}</div>
+                            <div class="text-sm text-gray-500">Steps Taken</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                            <div class="text-2xl font-bold text-yellow-400">${Math.round(metrics.error_rate * 100)}%</div>
+                            <div class="text-sm text-gray-500">Error Rate</div>
+                        </div>
+                        <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                            <div class="text-2xl font-bold text-purple-400">${result.test_metadata?.total_duration_seconds || 0}s</div>
+                            <div class="text-sm text-gray-500">Duration</div>
+                        </div>
+                    </div>
+                    
+                    ${aiInsights.overall_grade ? `
+                    <div class="bg-dark-bg rounded-lg p-4 border border-dark-border mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">Overall Grade</span>
+                            <span class="text-2xl font-bold text-accent-blue">${aiInsights.grade_letter}</span>
+                        </div>
+                        <div class="text-sm text-gray-400">${aiInsights.overall_grade}/100</div>
+                    </div>
+                    ` : ''}
+                    
+                    ${aiInsights.key_findings ? `
+                    <div class="bg-dark-bg rounded-lg p-4 border border-dark-border">
+                        <h4 class="font-medium mb-2">Key Findings</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            ${aiInsights.key_findings.map(finding => `<li>${finding}</li>`).join('')}
+                        </ul>
+                    </div>
+                    ` : ''}
+                `;
+            }
+            
+            // Update Screenshot Panel
+            const screenshotPanel = document.getElementById('screenshotPanel');
+            if (result.visual_documentation?.enhanced_gif_created) {
+                screenshotPanel.innerHTML = `
+                    <div class="w-full h-full">
+                        <img src="/results/enhanced_automation_with_thinking.gif" 
+                             alt="Automation GIF" 
+                             class="w-full h-full object-contain rounded-lg">
+                    </div>
+                `;
+            }
+            
+            // Show link to detailed results
+            setTimeout(() => {
+                if (confirm('Analysis complete! View detailed results page?')) {
+                    window.open(`/results/${currentJobId}`, '_blank');
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
