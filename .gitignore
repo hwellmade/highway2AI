@@ -84,8 +84,6 @@ screenshots/
 videos/
 logs/
 temp/
-alternative_recording/
-playwright-report/
 test-results/
 test/
 # Node.js (for potential frontend)
